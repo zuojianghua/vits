@@ -1,21 +1,18 @@
-# For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.7-slim
+FROM nvcr.io/nvidia/pytorch:23.01-py3
+WORKDIR /workspace
+USER root
+EXPOSE 8800
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Shanghai
+RUN apt-get update && apt-get upgrade -y && apt-get install git -y && apt-get install ffmpeg -y
+RUN apt-get install -y vim && apt-get install -y gcc && apt-get install -y g++ && apt-get install -y cmake
 
 # Keeps Python from generating .pyc files in the container
-ENV PYTHONDONTWRITEBYTECODE=1
+# ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
 
+COPY . /workspace
 # Install pip requirements
-COPY requirements.txt .
-RUN apt-get update
-RUN apt-get install -y vim
-RUN apt-get install -y gcc
-RUN apt-get install -y g++
-RUN apt-get install -y cmake
-RUN python -m pip install -r requirements.txt
-
-WORKDIR /content
-COPY . /content
-
-
+RUN pip install -r requirements.txt
+ENTRYPOINT ["jupyter-lab","--no-browser","--allow-root","--port=8800","--ip=0.0.0.0"]
