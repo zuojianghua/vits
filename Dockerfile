@@ -15,4 +15,5 @@ ENV PYTHONUNBUFFERED=1
 COPY . /workspace
 # Install pip requirements
 RUN pip install -r requirements.txt
+RUN cd monotonic_align && python setup.py build_ext --inplace 
 ENTRYPOINT ["jupyter-lab","--no-browser","--allow-root","--port=8800","--ip=0.0.0.0"]
