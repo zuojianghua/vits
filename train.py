@@ -298,4 +298,5 @@ def evaluate(hps, generator, eval_loader, writer_eval):
 
                            
 if __name__ == "__main__":
+  __spec__ = "ModuleSpec(name='builtins', loader=<class '_frozen_importlib.BuiltinImporter'>)"
   main()
